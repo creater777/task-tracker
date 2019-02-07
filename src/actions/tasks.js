@@ -16,22 +16,27 @@ export const taskAdd = ({title, description}) => ({
   value: {
     id: getGuid,
     title,
-    description
+    description,
+    complete: false,
+    checked: false
   }
 })
 
-export const taskEdit = ({id, title, description}) => ({
+export const taskEdit = ({index, id, title, description, complete, checked}) => ({
   type: TASKS_EDIT,
   value: {
     id,
     title,
-    description
-  }
+    description,
+    complete,
+    checked
+  },
+  index: index
 })
 
-export const taskRemove = id => ({
+export const taskRemove = ({index}) => ({
   type: TASKS_REMOVE,
-  value: id
+  index
 })
 
 export const taskSortBy = ({field, desk}) => ({

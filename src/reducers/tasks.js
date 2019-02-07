@@ -8,7 +8,7 @@ import {
 } from '../actions/tasks'
 
 const initialState = {
-  tasks: {},
+  items: [],
   sortBy: {
     field: 'title',
     desk: false
@@ -18,34 +18,28 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type){
     case TASKS_INIT:
-      return {
-        ...state,
-        tasks: localStorage.getItem('tasks')
-      }
+      return {...JSON.parse(localStorage.getItem("tasks") || '[]')}
 
     case TASKS_ADD:
+      state.items = [
+        ...state.items,
+      ].push(action.value)
+      return {...state}
+
     case TASKS_EDIT:
-      return {
-        tasks: {
-          ...state.tasks,
-          [action.value.id]: action.value
-        }
-      }
+      state.items[action.index] = action.value
+      return {...state}
 
     case TASKS_REMOVE:
-      delete state[action.value.id]
+      state.items.splice(action.index, 1)
       return {
-        tasks: {
-          ...state.tasks,
-        }
+        ...state,
+        items: [...state.items]
       }
 
     case TASKS_SORTBY:
       return {
-        sortBy: {
-          ...state.sortBy,
-          sortBy: action.sortBy
-        }
+        sortBy: {...action.sortBy}
       }
 
     case TASKS_STORE:
