@@ -39,11 +39,11 @@ export const taskRemove = ({index}) => ({
   index
 })
 
-export const taskSortBy = ({field, desk}) => ({
+export const taskSortBy = ({field, sort}) => ({
   type: TASKS_SORTBY,
   value: {
     field,
-    desk
+    sort
   }
 })
 

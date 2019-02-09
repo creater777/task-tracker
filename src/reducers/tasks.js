@@ -1,3 +1,4 @@
+import {compare} from '../helpers/compare'
 import {
   TASKS_INIT,
   TASKS_ADD,
@@ -9,16 +10,16 @@ import {
 
 const initialState = {
   items: [],
-  sortBy: {
+  orderBy: {
     field: 'title',
-    desk: false
+    sort: 'desc'
   }
 }
 
 export default (state = initialState, action) => {
   switch (action.type){
     case TASKS_INIT:
-      return {...JSON.parse(localStorage.getItem("tasks") || '[]')}
+      return {...JSON.parse(localStorage.getItem("tasks") || initialState)}
 
     case TASKS_ADD:
       state.items = [
@@ -38,9 +39,12 @@ export default (state = initialState, action) => {
       }
 
     case TASKS_SORTBY:
-      return {
-        sortBy: {...action.sortBy}
-      }
+      const {field, sort} = action.value
+      state.orderBy = {...action.value}
+      state.items.sort((item1, item2) =>
+        compare(item1, item2, field) * (sort === 'desc' ? -1 : 1)
+      )
+      return {...state}
 
     case TASKS_STORE:
       localStorage.setItem('tasks', JSON.parse(state))

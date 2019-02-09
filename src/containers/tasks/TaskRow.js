@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 // import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/RemoveCircleSharp';
@@ -19,14 +21,15 @@ const styles = theme => ({
   },
 });
 
-class TaskListItem extends Component {
+class TaskRow extends Component {
 
-  handleToggle() {
+  handleToggle(e) {
     this.props.taskEdit({
       ...this.props.item,
       index: this.props.index,
       checked: !this.props.item.checked
     })
+    e.preventDefault()
   }
 
   handleComplete() {
@@ -44,26 +47,31 @@ class TaskListItem extends Component {
   }
 
   render() {
-    const { item } = this.props;
-    console.log('render')
+    const {item} = this.props;
     return (
-      <ListItem key={item.id} role={undefined} dense button
-                onClick={() => this.handleToggle()}>
-        <Checkbox
-          checked={!!item.checked}
-          tabIndex={-1}
-          disableRipple
-        />
-        <ListItemText primary={`Line item ${item.id}`}/>
-        <ListItemSecondaryAction>
+      <TableRow
+        hover
+        onClick={(e) => this.handleToggle(e)}
+        role="checkbox"
+        aria-checked={!!item.checked}
+        tabIndex={-1}
+        key={item.id}
+        selected={!!item.checked}
+      >
+        <TableCell padding="checkbox">
+          <Checkbox checked={!!item.checked}/>
+        </TableCell>
+        <TableCell component="th" scope="row" padding="none">{item.title}</TableCell>
+        <TableCell align="left">{item.description}</TableCell>
+        <TableCell align="right">
           <IconButton aria-label="Remove" onClick={() => this.handleRemove()}>
             <CommentIcon/>
           </IconButton>
           <IconButton aria-label="Ready" onClick={() => this.handleComplete()}>
             <ReadyIcon/>
           </IconButton>
-        </ListItemSecondaryAction>
-      </ListItem>
+        </TableCell>
+      </TableRow>
     );
   }
 }
@@ -77,5 +85,4 @@ const mapStateToProps = (state, props) => {
 export default connect(
   mapStateToProps,
   {taskEdit, taskRemove}
-)(withStyles(styles)(TaskListItem)
-);
+)(withStyles(styles)(TaskRow));
