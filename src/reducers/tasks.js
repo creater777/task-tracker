@@ -5,6 +5,7 @@ import {
   TASKS_EDIT,
   TASKS_REMOVE,
   TASKS_SORTBY,
+  TASKS_SETPAGINATION,
   TASKS_STORE
 } from '../actions/tasks'
 
@@ -13,6 +14,11 @@ const initialState = {
   orderBy: {
     field: 'title',
     sort: 'desc'
+  },
+  pagination: {
+    rowsPerPage: 10,
+    page: 0,
+    rowsPerPageOptions: [5,10,25]
   }
 }
 
@@ -45,6 +51,12 @@ export default (state = initialState, action) => {
         compare(item1, item2, field) * (sort === 'desc' ? -1 : 1)
       )
       return {...state}
+
+    case TASKS_SETPAGINATION:
+      return {
+        ...state,
+        pagination: action.value
+      }
 
     case TASKS_STORE:
       localStorage.setItem('tasks', JSON.parse(state))

@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
 import CommentIcon from '@material-ui/icons/RemoveCircleSharp';
 import ReadyIcon from '@material-ui/icons/AdjustRounded';
 
@@ -46,24 +47,30 @@ class TaskRow extends Component {
     })
   }
 
+  handleEdit() {
+    this.props.handleEdit(this.props.index)
+  }
+
   render() {
     const {item} = this.props;
     return (
       <TableRow
         hover
-        onClick={(e) => this.handleToggle(e)}
         role="checkbox"
         aria-checked={!!item.checked}
         tabIndex={-1}
         key={item.id}
         selected={!!item.checked}
       >
-        <TableCell padding="checkbox">
+        <TableCell padding="checkbox" onClick={(e) => this.handleToggle(e)}>
           <Checkbox checked={!!item.checked}/>
         </TableCell>
         <TableCell component="th" scope="row" padding="none">{item.title}</TableCell>
         <TableCell align="left">{item.description}</TableCell>
         <TableCell align="right">
+          <IconButton aria-label="Edit" onClick={() => this.handleEdit()}>
+            <EditIcon/>
+          </IconButton>
           <IconButton aria-label="Remove" onClick={() => this.handleRemove()}>
             <CommentIcon/>
           </IconButton>

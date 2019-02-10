@@ -5,6 +5,7 @@ export const TASKS_ADD = 'TASKS_ADD'
 export const TASKS_EDIT = 'TASKS_EDIT'
 export const TASKS_REMOVE = 'TASKS_REMOVE'
 export const TASKS_SORTBY = 'TASKS_SORTBY'
+export const TASKS_SETPAGINATION = 'TASKS_SETPAGINATION'
 export const TASKS_STORE = 'TASKS_STORE'
 
 export const tasksInit = () => ({
@@ -44,6 +45,15 @@ export const taskSortBy = ({field, sort}) => ({
   value: {
     field,
     sort
+  }
+})
+
+export const taskSetPagination = ({rowsPerPage, page, rowsPerPageOptions}) => ({
+  type: TASKS_SETPAGINATION,
+  value: {
+    rowsPerPage,
+    page,
+    rowsPerPageOptions
   }
 })
 
