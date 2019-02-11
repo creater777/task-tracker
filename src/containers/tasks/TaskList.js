@@ -9,17 +9,13 @@ import TablePagination from '@material-ui/core/TablePagination'
 
 import TaskRow from './TaskRow'
 import TaskHeader from './TaskHeader'
-import TaskDialog, {DIALOG_MODE_ADD, DIALOG_MODE_EDIT} from './TaskDialog'
+import TaskDialog from './TaskDialog'
 
-import {tasksInit, taskSetPagination, taskAdd, taskEdit} from '../../actions/tasks'
+import {tasksInit, taskSetPagination, taskAdd, taskEdit, taskSetDialog} from '../../actions/tasks'
 
 class TaskList extends Component {
   componentWillMount() {
     this.props.tasksInit();
-    this.setState({
-      showDialog: false,
-      dialogData: {}
-    })
   }
 
   handleChangePage(page){
@@ -33,64 +29,38 @@ class TaskList extends Component {
   }
 
   handleAdd(){
-    this.setState({
-      showDialog: true,
-      dialogMode: DIALOG_MODE_ADD,
-      dialogData: null
+    this.props.taskSetDialog({visible: true})
+  }
+
+  handleEdit(value){
+    this.props.taskSetDialog({
+      data: this.props.tasks.find(item => item.id === value.id),
+      visible: true
     })
   }
 
-  handleEdit(index){
-    const {tasks} = this.props
-    this.setState({
-      showDialog: true,
-      dialogMode: DIALOG_MODE_EDIT,
-      dialogData: tasks[index]
-    })
-  }
-
-  handleDialogClose(data){
-    const {dialogMode} = this.state
-    this.setState({
-      showDialog: false,
-    })
-    switch (dialogMode){
-      case DIALOG_MODE_ADD:
-        this.props.taskAdd({
-          title: data.title,
-          description: data.description
-        })
-        break
-      case DIALOG_MODE_EDIT:
-        const {index} = this.props
-        this.props.taskEdit({
-          index, id, title, description, complete, checked
-        })
-
+  onDialogSubscribe(data){
+    if (data.id){
+      this.props.taskEdit({
+        ...data
+      })
+      return;
     }
-  }
-
-  handleDialogSubscribe(data){
-    this.setState({
-      showDialog: false,
+    this.props.taskAdd({
+      title: data.title,
+      description: data.description
     })
   }
 
   render() {
-    const { classes, orderBy, tasks, pagination } = this.props
+    const { classes, orderBy, tasks, pagination, dialog } = this.props
     const { page, rowsPerPage} = pagination
-    const { showDialog, dialogData, dialogMode } = this.state
+    const { visible } = dialog
     return <div key="taskContext">
       <Fab color="secondary" aria-label="Add" className={classes.fabButton} onClick={() => this.handleAdd()}>
         <AddIcon />
       </Fab>
-      {showDialog && <TaskDialog
-        state = { true }
-        dialogMode = { dialogMode }
-        dialogData = { dialogData }
-        handleClose = { () => this.handleDialogClose() }
-        handleSubscribe = { data => this.handleDialogSubscribe(data) }
-      />}
+      {visible && <TaskDialog handleSubscribe = { data => this.onDialogSubscribe(data) } />}
       <Table aria-labelledby="tableTitle">
         <TaskHeader orderBy={orderBy}/>
         <TableBody>
@@ -98,7 +68,7 @@ class TaskList extends Component {
             <TaskRow
               key={value.id}
               index={index}
-              handleEdit = {index => this.handleEdit(index)}
+              handleEdit = {() => this.handleEdit(value, index)}
             />
           )}
         </TableBody>
@@ -126,11 +96,12 @@ const mapStateToProps = (state, props) => {
   return {
     tasks: state.tasks.items,
     orderBy: state.tasks.orderBy,
-    pagination: state.tasks.pagination
+    pagination: state.tasks.pagination,
+    dialog: state.tasks.dialog || {}
   }
 }
 
 export default connect(
   mapStateToProps,
-  {tasksInit, taskSetPagination, taskAdd, taskEdit}
+  {tasksInit, taskSetPagination, taskAdd, taskEdit, taskSetDialog}
 )(TaskList)

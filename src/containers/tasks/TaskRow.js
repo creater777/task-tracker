@@ -42,13 +42,11 @@ class TaskRow extends Component {
   }
 
   handleRemove() {
-    this.props.taskRemove({
-      index: this.props.index
-    })
+    this.props.taskRemove(this.props.item.id)
   }
 
   handleEdit() {
-    this.props.handleEdit(this.props.index)
+    this.props.handleEdit(this.props.id)
   }
 
   render() {

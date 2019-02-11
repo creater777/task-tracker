@@ -41,9 +41,10 @@ class TaskHeaderContainer extends Component {
 }
 
 const mapStateToProps = (state) => {
-  // return {
-  //   orderBy: state.tasks.orderBy
-  // }
+  return {
+    rows: state.tasks.items.length,
+    // orderBy: state.tasks.orderBy
+  }
 }
 
 export default connect(

@@ -5,7 +5,8 @@ export const TASKS_ADD = 'TASKS_ADD'
 export const TASKS_EDIT = 'TASKS_EDIT'
 export const TASKS_REMOVE = 'TASKS_REMOVE'
 export const TASKS_SORTBY = 'TASKS_SORTBY'
-export const TASKS_SETPAGINATION = 'TASKS_SETPAGINATION'
+export const TASKS_SET_PAGINATION = 'TASKS_SET_PAGINATION'
+export const TASKS_SET_DIALOG = 'TASKS_SET_DIALOG'
 export const TASKS_STORE = 'TASKS_STORE'
 
 export const tasksInit = () => ({
@@ -23,7 +24,7 @@ export const taskAdd = ({title, description}) => ({
   }
 })
 
-export const taskEdit = ({index, id, title, description, complete, checked}) => ({
+export const taskEdit = ({id, title, description, complete, checked}) => ({
   type: TASKS_EDIT,
   value: {
     id,
@@ -31,13 +32,12 @@ export const taskEdit = ({index, id, title, description, complete, checked}) => 
     description,
     complete,
     checked
-  },
-  index: index
+  }
 })
 
-export const taskRemove = ({index}) => ({
+export const taskRemove = id => ({
   type: TASKS_REMOVE,
-  index
+  id
 })
 
 export const taskSortBy = ({field, sort}) => ({
@@ -49,11 +49,19 @@ export const taskSortBy = ({field, sort}) => ({
 })
 
 export const taskSetPagination = ({rowsPerPage, page, rowsPerPageOptions}) => ({
-  type: TASKS_SETPAGINATION,
+  type: TASKS_SET_PAGINATION,
   value: {
     rowsPerPage,
     page,
     rowsPerPageOptions
+  }
+})
+
+export const taskSetDialog = ({data, visible}) => ({
+  type: TASKS_SET_DIALOG,
+  value: {
+    data,
+    visible
   }
 })
 
