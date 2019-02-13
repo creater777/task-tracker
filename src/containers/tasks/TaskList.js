@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import Beforeunload from 'react-beforeunload'
 
 // import PropTypes from 'prop-types'
@@ -8,49 +8,53 @@ import AddIcon from '@material-ui/icons/Add';
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TablePagination from '@material-ui/core/TablePagination'
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 
 import TaskRow from './TaskRow'
 import TaskHeader from './TaskHeader'
 import TaskDialog from './TaskDialog'
-import TaskToolbar from '../../components/tasks/TaskToolbar'
+import TaskToolbar from './TaskToolbar'
 
-import {tasksInit, tasksStore, taskSetPagination, taskAdd, taskEdit, taskRemove, taskSelect, taskSetDialog} from '../../actions/tasks'
+import {
+  tasksInit,
+  tasksStore,
+  taskSetPagination,
+  taskAdd,
+  taskEdit,
+  taskSetDialog
+} from '../../actions/tasks'
 
 class TaskList extends Component {
   componentWillMount() {
     this.props.tasksInit()
   }
 
-  componentWillUnmount(e){
+  componentWillUnmount() {
     this.props.tasksStore()
   }
 
-  handleChangePage(page){
+  handleChangePage(page) {
     const {rowsPerPage, rowsPerPageOptions} = this.props.pagination
     this.props.taskSetPagination({rowsPerPage, page, rowsPerPageOptions})
   }
 
-  handleChangeRowsPerPage(rowsPerPage){
+  handleChangeRowsPerPage(rowsPerPage) {
     const {page, rowsPerPageOptions} = this.props.pagination
     this.props.taskSetPagination({rowsPerPage, page, rowsPerPageOptions})
   }
 
-  handleAdd(){
+  handleAdd() {
     this.props.taskSetDialog({visible: true})
   }
 
-  handleEdit(value){
+  handleEdit(value) {
     this.props.taskSetDialog({
       data: this.props.tasks.find(item => item.id === value.id),
       visible: true
     })
   }
 
-  onDialogSubscribe(data){
-    if (data.id){
+  onDialogSubscribe(data) {
+    if (data.id) {
       this.props.taskEdit({
         ...data
       })
@@ -62,43 +66,28 @@ class TaskList extends Component {
     })
   }
 
-  handleRemoveItems(){
-    this.props.taskRemove(this.props.selected)
-  }
-
   render() {
     const
-      {classes, tasks, selected, tasksOnPage, pagination, dialog} = this.props,
+      {classes, tasks, pagination, dialog, orderBy} = this.props,
       {page, rowsPerPage} = pagination,
-      {visible} = dialog
-    console.log('render')
-    return <Beforeunload onBeforeunload={e => this.componentWillUnmount(e)}>
-      <Fab color="secondary" aria-label="Add" className={classes.fabButton} onClick={() => this.handleAdd()}>
-        <AddIcon />
-      </Fab>
-      {selected.length ?
-        <TaskToolbar
-          numSelected = {selected.length}
-          handleRemove={() => this.handleRemoveItems()}
-        /> :
-        <AppBar position="static" className={classes.root}>
-          <Toolbar>
-            <Typography variant="h6" color="inherit">
-              Todos
-            </Typography>
-          </Toolbar>
-        </AppBar>
-      }
+      {visible} = dialog,
+      tasksOnPage = tasks.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 
-      {visible && <TaskDialog handleSubscribe = { data => this.onDialogSubscribe(data) } />}
+    return <Beforeunload onBeforeunload={() => this.componentWillUnmount()}>
+      <Fab color="secondary" aria-label="Add" className={classes.fabButton} onClick={() => this.handleAdd()}>
+        <AddIcon/>
+      </Fab>
+      <TaskToolbar />
+
+      {visible && <TaskDialog handleSubscribe={data => this.onDialogSubscribe(data)}/>}
       <Table aria-labelledby="tableTitle">
-        <TaskHeader />
+        <TaskHeader orderBy={orderBy}/>
         <TableBody>
-          {tasksOnPage.map((value, index) =>
+          {tasksOnPage.map(value =>
             <TaskRow
               key={value.id}
-              index={index}
-              handleEdit = {() => this.handleEdit(value, index)}
+              id={value.id}
+              handleEdit={() => this.handleEdit(value)}
             />
           )}
         </TableBody>
@@ -123,21 +112,15 @@ class TaskList extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const
-    {pagination} = state.tasks,
-    {page, rowsPerPage} = pagination,
-    tasksOnPage = state.tasks.items.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-
   return {
     tasks: state.tasks.items,
     pagination: state.tasks.pagination,
-    tasksOnPage,
-    selected: tasksOnPage.filter(item => item.checked),
-    dialog: state.tasks.dialog || {}
+    dialog: state.tasks.dialog || {},
+    orderBy: state.tasks.orderBy
   }
 }
 
 export default connect(
   mapStateToProps,
-  {tasksInit, tasksStore, taskSetPagination, taskAdd, taskEdit, taskRemove, taskSelect, taskSetDialog}
+  {tasksInit, tasksStore, taskSetPagination, taskAdd, taskEdit, taskSetDialog}
 )(TaskList)

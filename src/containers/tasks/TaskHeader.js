@@ -18,7 +18,7 @@ const headers = [
 
 class TaskHeaderContainer extends Component {
   handleSort(field){
-    const {orderBy, pagination, taskSortBy} = this.props;
+    const {orderBy, taskSortBy} = this.props;
     taskSortBy({
       field,
       sort: orderBy.field === field && orderBy.sort === 'asc' ? 'desc' : 'asc'
@@ -56,7 +56,6 @@ const mapStateToProps = (state) => {
   return {
     tasksOnPage,
     selected: tasksOnPage.filter(item => item.checked),
-    orderBy: state.tasks.orderBy
   }
 }
 

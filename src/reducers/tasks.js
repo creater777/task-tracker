@@ -69,7 +69,10 @@ export default (state = initialState, action) => {
           state.items[index].checked = action.value.value
         }
       })
-      return {...state}
+      return {
+        ...state,
+        items: [...state.items]
+      }
 
     case TASKS_SET_PAGINATION:
       return {
