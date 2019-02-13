@@ -5,6 +5,7 @@ export const TASKS_ADD = 'TASKS_ADD'
 export const TASKS_EDIT = 'TASKS_EDIT'
 export const TASKS_REMOVE = 'TASKS_REMOVE'
 export const TASKS_SORTBY = 'TASKS_SORTBY'
+export const TASKS_SELECT_ALL = 'TASKS_SELECT_ALL'
 export const TASKS_SET_PAGINATION = 'TASKS_SET_PAGINATION'
 export const TASKS_SET_DIALOG = 'TASKS_SET_DIALOG'
 export const TASKS_STORE = 'TASKS_STORE'
@@ -16,7 +17,7 @@ export const tasksInit = () => ({
 export const taskAdd = ({title, description}) => ({
   type: TASKS_ADD,
   value: {
-    id: getGuid,
+    id: getGuid(),
     title,
     description,
     complete: false,
@@ -35,9 +36,9 @@ export const taskEdit = ({id, title, description, complete, checked}) => ({
   }
 })
 
-export const taskRemove = id => ({
+export const taskRemove = ids => ({
   type: TASKS_REMOVE,
-  id
+  ids
 })
 
 export const taskSortBy = ({field, sort}) => ({
@@ -45,6 +46,14 @@ export const taskSortBy = ({field, sort}) => ({
   value: {
     field,
     sort
+  }
+})
+
+export const taskSelect = ({ids, value}) => ({
+  type: TASKS_SELECT_ALL,
+  value: {
+    ids,
+    value
   }
 })
 

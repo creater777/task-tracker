@@ -5,6 +5,7 @@ import {
   TASKS_EDIT,
   TASKS_REMOVE,
   TASKS_SORTBY,
+  TASKS_SELECT_ALL,
   TASKS_SET_PAGINATION,
   TASKS_SET_DIALOG,
   TASKS_STORE
@@ -27,7 +28,13 @@ export default (state = initialState, action) => {
   let index = null
   switch (action.type){
     case TASKS_INIT:
-      return {...JSON.parse(localStorage.getItem("tasks") || initialState)}
+      let tasks = {}
+      try {
+        tasks = JSON.parse(localStorage.getItem("tasks"))
+      } catch (e) {
+        tasks = initialState
+      }
+      return {...tasks}
 
     case TASKS_ADD:
       state.items.push(action.value)
@@ -39,8 +46,10 @@ export default (state = initialState, action) => {
       return {...state}
 
     case TASKS_REMOVE:
-      index = state.items.findIndex(item => item.id === action.id)
-      state.items.splice(index, 1)
+      action.ids.forEach(id => {
+        index = state.items.findIndex(item => item.id === id)
+        state.items.splice(index, 1)
+      })
       return {
         ...state,
         items: [...state.items]
@@ -52,6 +61,14 @@ export default (state = initialState, action) => {
       state.items.sort((item1, item2) =>
         compare(item1, item2, field) * (sort === 'desc' ? -1 : 1)
       )
+      return {...state}
+
+    case TASKS_SELECT_ALL:
+      state.items.map((item, index) => {
+        if (action.value.ids.indexOf(item.id) > -1){
+          state.items[index].checked = action.value.value
+        }
+      })
       return {...state}
 
     case TASKS_SET_PAGINATION:
@@ -67,7 +84,7 @@ export default (state = initialState, action) => {
       }
 
     case TASKS_STORE:
-      localStorage.setItem('tasks', JSON.parse(state))
+      localStorage.setItem('tasks', JSON.stringify(state))
       return state
 
     default:

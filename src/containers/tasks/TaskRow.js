@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
-// import PropTypes from 'prop-types';
+import classNames from 'classnames'
+import { lighten } from '@material-ui/core/styles/colorManipulator'
 import {withStyles} from '@material-ui/core/styles';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
+
+// import PropTypes from 'prop-types';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -13,12 +13,14 @@ import EditIcon from '@material-ui/icons/Edit';
 import CommentIcon from '@material-ui/icons/RemoveCircleSharp';
 import ReadyIcon from '@material-ui/icons/AdjustRounded';
 
-
 import {taskEdit, taskRemove} from '../../actions/tasks'
 
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
+  },
+  highlight: {
+    backgroundColor: lighten("rgb(0,255,0)", 0.85)
   },
 });
 
@@ -42,7 +44,7 @@ class TaskRow extends Component {
   }
 
   handleRemove() {
-    this.props.taskRemove(this.props.item.id)
+    this.props.taskRemove([this.props.item.id])
   }
 
   handleEdit() {
@@ -50,7 +52,8 @@ class TaskRow extends Component {
   }
 
   render() {
-    const {item} = this.props;
+    const {classes, item} = this.props;
+    console.log('row render')
     return (
       <TableRow
         hover
@@ -59,6 +62,9 @@ class TaskRow extends Component {
         tabIndex={-1}
         key={item.id}
         selected={!!item.checked}
+        className={classNames({},{
+          [classes.highlight]: !!item.complete
+        })}
       >
         <TableCell padding="checkbox" onClick={(e) => this.handleToggle(e)}>
           <Checkbox checked={!!item.checked}/>
