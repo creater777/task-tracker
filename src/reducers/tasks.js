@@ -37,6 +37,7 @@ export default (state = initialState, action) => {
       return {...tasks}
 
     case TASKS_ADD:
+      state.items = [...state.items]
       state.items.push(action.value)
       return {...state}
 
@@ -64,7 +65,7 @@ export default (state = initialState, action) => {
       return {...state}
 
     case TASKS_SELECT_ALL:
-      state.items.map((item, index) => {
+      state.items.forEach((item, index) => {
         if (action.value.ids.indexOf(item.id) > -1){
           state.items[index].checked = action.value.value
         }

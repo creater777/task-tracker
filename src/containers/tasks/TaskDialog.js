@@ -7,6 +7,10 @@ import {taskSetDialog} from '../../actions/tasks'
 class TaskDialog extends Component {
 
   componentWillMount(){
+    this.onEnter()
+  }
+
+  onEnter(){
     if (this.props.dialog.data){
       const {title, description} = this.props.dialog.data
       this.setState({ title, description })
@@ -42,8 +46,10 @@ class TaskDialog extends Component {
       onFieldChange = {(field, event) => this.onFieldChange(field, event)}
       handleClose = {() => this.handleClose()}
       handleSubscribe = {() => this.handleSubscribe()}
+      onEnter = {() => this.onEnter()}
       id = {id}
       title = {title}
+      visible = {dialog.visible}
       description = {description}
     />
   }

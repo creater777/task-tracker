@@ -7,11 +7,12 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 
-export default ({id, title, description, onFieldChange, handleClose, handleSubscribe}) =>
+export default ({visible, onEnter, id, title, description, onFieldChange, handleClose, handleSubscribe}) =>
   <Dialog
-    open={true}
+    open={!!visible}
     onClose={() => handleClose()}
     aria-labelledby="form-dialog-title"
+    onEnter = {() => onEnter()}
   >
     <DialogTitle id="form-dialog-title">{!id ? 'Add task' : 'Edit task'}</DialogTitle>
     <DialogContent>

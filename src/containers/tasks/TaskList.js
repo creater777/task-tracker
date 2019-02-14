@@ -68,9 +68,8 @@ class TaskList extends Component {
 
   render() {
     const
-      {classes, tasks, pagination, dialog, orderBy} = this.props,
+      {classes, tasks, pagination, orderBy} = this.props,
       {page, rowsPerPage} = pagination,
-      {visible} = dialog,
       tasksOnPage = tasks.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 
     return <Beforeunload onBeforeunload={() => this.componentWillUnmount()}>
@@ -79,7 +78,7 @@ class TaskList extends Component {
       </Fab>
       <TaskToolbar />
 
-      {visible && <TaskDialog handleSubscribe={data => this.onDialogSubscribe(data)}/>}
+      <TaskDialog handleSubscribe={data => this.onDialogSubscribe(data)}/>
       <Table aria-labelledby="tableTitle">
         <TaskHeader orderBy={orderBy}/>
         <TableBody>
@@ -115,7 +114,6 @@ const mapStateToProps = (state, props) => {
   return {
     tasks: state.tasks.items,
     pagination: state.tasks.pagination,
-    dialog: state.tasks.dialog || {},
     orderBy: state.tasks.orderBy
   }
 }
