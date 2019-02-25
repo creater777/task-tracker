@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import Beforeunload from 'react-beforeunload'
+import {withStyles} from "@material-ui/core/styles/index";
 
 // import PropTypes from 'prop-types'
 import Fab from '@material-ui/core/Fab';
@@ -22,6 +23,20 @@ import {
   taskEdit,
   taskSetDialog
 } from '../../actions/tasks'
+
+const styles = theme => ({
+  root: {
+    margin: '0',
+  },
+  fabButton: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 30,
+    left: 0,
+    right: 0,
+    margin: '0 auto',
+  },
+});
 
 class TaskList extends Component {
   componentWillMount() {
@@ -118,7 +133,7 @@ const mapStateToProps = (state, props) => {
   }
 }
 
-export default connect(
+export default withStyles(styles)(connect(
   mapStateToProps,
   {tasksInit, tasksStore, taskSetPagination, taskAdd, taskEdit, taskSetDialog}
-)(TaskList)
+)(TaskList))

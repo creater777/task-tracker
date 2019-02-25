@@ -6,7 +6,7 @@ import reducers from './reducers/'
 import registerServiceWorker from './registerServiceWorker';
 
 import './index.css';
-import App from './components/App';
+import App from './containers/App';
 
 const store = createStore(
   reducers,

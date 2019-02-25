@@ -8,6 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
+import Button from '@material-ui/core/Button'
 
 const toolbarStyles = theme => ({
   highlight:
@@ -35,7 +36,9 @@ export default withStyles(toolbarStyles)((
   {
     classes,
     numSelected,
-    handleRemove
+    handleRemove,
+    login,
+    handleLogout
   }) =>
   numSelected ?
     <AppBar position="static">
@@ -57,9 +60,24 @@ export default withStyles(toolbarStyles)((
     </AppBar>:
     <AppBar position="static" className={classes.root}>
       <Toolbar>
-        <Typography variant="h6" color="inherit">
-          Todos
-        </Typography>
+        <div className={classes.title}>
+          <Typography variant="h6" color="inherit">
+            Todos
+          </Typography>
+        </div>
+        <div className={classes.spacer}/>
+        <div className={classes.title}>
+          <Typography variant="h6" color="inherit">
+            {login}
+          </Typography>
+        </div>
+        <div className={classes.actions}>
+          <Tooltip title="Logout">
+            <Button variant="contained" onClick={() => handleLogout()}>
+              Logout
+            </Button>
+          </Tooltip>
+        </div>
       </Toolbar>
     </AppBar>
 )
