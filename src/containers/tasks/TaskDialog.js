@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 
 import TaskDialogComponent from '../../components/tasks/TaskDialog'
-import {taskSetDialog} from '../../actions/tasks'
+import {taskSetDialog, taskEdit, taskAdd} from '../../actions/tasks'
 
 class TaskDialog extends Component {
 
@@ -28,8 +28,21 @@ class TaskDialog extends Component {
       {title, description} = this.state,
       {dialog} = this.props,
       id = dialog.data && dialog.data.id
-    this.props.handleSubscribe({id, title, description})
+    this.onDialogSubscribe({id, title, description})
     this.props.taskSetDialog({visible: false})
+  }
+
+  onDialogSubscribe(data) {
+    if (data.id) {
+      this.props.taskEdit({
+        ...data
+      })
+      return;
+    }
+    this.props.taskAdd({
+      title: data.title,
+      description: data.description
+    })
   }
 
   onFieldChange(field, event){
@@ -63,5 +76,5 @@ const mapStateToProps = (state) =>{
 
 export default connect(
   mapStateToProps,
-  {taskSetDialog}
+  {taskSetDialog, taskEdit, taskAdd}
 )(TaskDialog)
