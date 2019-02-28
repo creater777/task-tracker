@@ -8,7 +8,8 @@ import {
   TASKS_SELECT_ALL,
   TASKS_SET_PAGINATION,
   TASKS_SET_DIALOG,
-  TASKS_STORE
+  TASKS_STORE,
+  TASKS_SET_TAB
 } from '../actions/tasks'
 
 const initialState = {
@@ -21,20 +22,15 @@ const initialState = {
     rowsPerPage: 10,
     page: 0,
     rowsPerPageOptions: [5,10,25]
-  }
+  },
+  tab: 0
 }
 
 export default (state = initialState, action) => {
   let index = null
   switch (action.type){
     case TASKS_INIT:
-      let tasks = {}
-      try {
-        tasks = JSON.parse(localStorage.getItem("tasks"))
-      } catch (e) {
-        tasks = initialState
-      }
-      return {...tasks}
+      return {...(JSON.parse(localStorage.getItem("tasks")) || initialState)}
 
     case TASKS_ADD:
       state.items = [...state.items]
@@ -90,6 +86,9 @@ export default (state = initialState, action) => {
     case TASKS_STORE:
       localStorage.setItem('tasks', JSON.stringify(state))
       return state
+
+    case TASKS_SET_TAB:
+      return {...state, tab: action.value}
 
     default:
       return state

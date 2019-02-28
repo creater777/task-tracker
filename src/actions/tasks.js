@@ -9,29 +9,30 @@ export const TASKS_SELECT_ALL = 'TASKS_SELECT_ALL'
 export const TASKS_SET_PAGINATION = 'TASKS_SET_PAGINATION'
 export const TASKS_SET_DIALOG = 'TASKS_SET_DIALOG'
 export const TASKS_STORE = 'TASKS_STORE'
+export const TASKS_SET_TAB = 'TASKS_SET_TAB'
 
 export const tasksInit = () => ({
   type: TASKS_INIT
 })
 
-export const taskAdd = ({title, description}) => ({
+export const taskAdd = ({title, description, status}) => ({
   type: TASKS_ADD,
   value: {
     id: getGuid(),
     title,
     description,
-    complete: false,
+    status: status || 'planed',
     checked: false
   }
 })
 
-export const taskEdit = ({id, title, description, complete, checked}) => ({
+export const taskEdit = ({id, title, description, status, checked}) => ({
   type: TASKS_EDIT,
   value: {
     id,
     title,
     description,
-    complete,
+    status,
     checked
   }
 })
@@ -76,4 +77,9 @@ export const taskSetDialog = ({data, visible}) => ({
 
 export const tasksStore = () => ({
   type: TASKS_STORE
+})
+
+export const tasksSetTab = value => ({
+  type: TASKS_SET_TAB,
+  value
 })

@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {taskAdd, taskEdit, taskSetDialog, taskSetPagination, tasksInit, tasksStore} from "../../actions/tasks";
 
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -8,6 +7,8 @@ import TablePagination from '@material-ui/core/TablePagination'
 
 import TaskRow from './TaskRow'
 import TaskHeader from './TaskHeader'
+
+import {taskSetDialog, taskSetPagination} from "../../actions/tasks"
 
 class TaskTable extends Component {
 
@@ -77,5 +78,5 @@ const mapStateToProps = (state, props) => {
 
 export default connect(
   mapStateToProps,
-  {tasksInit, tasksStore, taskSetPagination, taskAdd, taskEdit, taskSetDialog}
+  {taskSetPagination, taskSetDialog}
 )(TaskTable)

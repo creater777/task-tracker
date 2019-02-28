@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
+import {statuses} from '../../config'
 
 import TaskRowComponent from '../../components/tasks/TaskRow'
 // import PropTypes from 'prop-types';
@@ -16,14 +17,6 @@ class TaskRow extends Component {
     })
   }
 
-  handleComplete() {
-    this.props.taskEdit({
-      ...this.props.item,
-      index: this.props.index,
-      complete: !this.props.item.complete
-    })
-  }
-
   handleRemove() {
     this.props.taskRemove([this.props.item.id])
   }
@@ -33,14 +26,14 @@ class TaskRow extends Component {
   }
 
   render() {
-    const {item} = this.props;
-    console.log('row render')
+    const {item} = this.props,
+      color = statuses[item.status] && statuses[item.status].color
     return <TaskRowComponent
       item={item}
-      handleToggle={() => this.handleToggle()}
-      handleComplete={() => this.handleComplete()}
-      handleRemove={() => this.handleRemove()}
-      handleEdit={() => this.handleEdit()}
+      color={color}
+      handleToggle={this.handleToggle.bind(this)}
+      handleRemove={this.handleRemove.bind(this)}
+      handleEdit={this.handleEdit.bind(this)}
     />
   }
 }

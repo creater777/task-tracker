@@ -10,12 +10,9 @@ import AddIcon from '@material-ui/icons/Add'
 import TaskDialog from './TaskDialog'
 import TaskToolbar from './TaskToolbar'
 import TaskTable from './TaskTable'
+import TaskScrum from './TaskScrum'
 
-import {
-  tasksInit,
-  tasksStore,
-  taskSetDialog
-} from '../../actions/tasks'
+import {tasksInit, tasksStore, taskSetDialog} from '../../actions/tasks'
 
 const styles = theme => ({
   root: {
@@ -45,7 +42,7 @@ class TaskList extends Component {
   }
 
   render() {
-    const {classes} = this.props
+    const {classes, tab} = this.props
 
     return <Beforeunload onBeforeunload={() => this.componentWillUnmount()}>
       <Fab color="secondary" aria-label="Add" className={classes.fabButton} onClick={() => this.handleAdd()}>
@@ -53,7 +50,7 @@ class TaskList extends Component {
       </Fab>
       <TaskToolbar />
       <TaskDialog />
-      <TaskTable />
+      {tab === 0 ? <TaskTable /> : <TaskScrum />}
     </Beforeunload>
   }
 }
@@ -62,7 +59,8 @@ const mapStateToProps = (state, props) => {
   return {
     tasks: state.tasks.items,
     pagination: state.tasks.pagination,
-    orderBy: state.tasks.orderBy
+    orderBy: state.tasks.orderBy,
+    tab: state.tasks.tab
   }
 }
 

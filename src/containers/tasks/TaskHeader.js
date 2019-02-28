@@ -27,7 +27,6 @@ class TaskHeaderContainer extends Component {
 
   handleSelectAll(){
     const { selected, tasksOnPage, taskSelect} = this.props
-    console.log(selected, tasksOnPage)
     taskSelect({
       ids: tasksOnPage.map(item => item.id),
       value: selected.length !== tasksOnPage.length

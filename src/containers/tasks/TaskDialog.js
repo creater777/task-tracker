@@ -12,10 +12,9 @@ class TaskDialog extends Component {
 
   onEnter(){
     if (this.props.dialog.data){
-      const {title, description} = this.props.dialog.data
-      this.setState({ title, description })
+      this.setState(this.props.dialog.data)
     } else {
-      this.setState({ title: null, description: null })
+      this.setState({title: null, description: null, status: null})
     }
   }
 
@@ -25,45 +24,33 @@ class TaskDialog extends Component {
 
   handleSubscribe(){
     const
-      {title, description} = this.state,
+      {title, description, status} = this.state,
       {dialog} = this.props,
       id = dialog.data && dialog.data.id
-    this.onDialogSubscribe({id, title, description})
     this.props.taskSetDialog({visible: false})
-  }
-
-  onDialogSubscribe(data) {
-    if (data.id) {
-      this.props.taskEdit({
-        ...data
-      })
-      return;
+    if (id){
+      this.props.taskEdit({id, title, description, status})
+      return
     }
-    this.props.taskAdd({
-      title: data.title,
-      description: data.description
-    })
+    this.props.taskAdd({title, description, status})
   }
 
-  onFieldChange(field, event){
+  onFieldChange(field, value){
     this.setState({
-      [field]: event.target.value
+      [field]: value
     })
   }
 
   render(){
-    const {title, description} = this.state,
-      {dialog} = this.props,
+    const {dialog} = this.props,
       id = dialog.data && dialog.data.id
     return <TaskDialogComponent
-      onFieldChange = {(field, event) => this.onFieldChange(field, event)}
-      handleClose = {() => this.handleClose()}
-      handleSubscribe = {() => this.handleSubscribe()}
-      onEnter = {() => this.onEnter()}
-      id = {id}
-      title = {title}
+      onFieldChange = {this.onFieldChange.bind(this)}
+      handleClose = {this.handleClose.bind(this)}
+      handleSubscribe = {this.handleSubscribe.bind(this)}
+      onEnter = {this.onEnter.bind(this)}
+      item={{...this.state, id}}
       visible = {dialog.visible}
-      description = {description}
     />
   }
 }

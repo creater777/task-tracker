@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 // import PropTypes from 'prop-types'
 import TaskToolbarComponent from '../../components/tasks/TaskToolbar'
 
-import {taskRemove} from '../../actions/tasks'
+import {taskRemove, tasksSetTab} from '../../actions/tasks'
 import {authLogout} from '../../actions/auth'
 
 class TaskToolbar extends Component {
@@ -17,13 +17,19 @@ class TaskToolbar extends Component {
     this.props.authLogout()
   }
 
+  handleTabChange(target, value){
+    this.props.tasksSetTab(value)
+  }
+
   render() {
-    const {selected, login} = this.props
+    const {selected, login, tab} = this.props
     return <TaskToolbarComponent
       numSelected={selected.length}
       login={login}
-      handleRemove={() => this.handleRemoveItems()}
-      handleLogout={() => this.handleLogout()}
+      tabIndex={tab}
+      handleRemove={this.handleRemoveItems.bind(this)}
+      handleLogout={this.handleLogout.bind(this)}
+      handleTabChange={this.handleTabChange.bind(this)}
     />
 
   }
@@ -31,17 +37,18 @@ class TaskToolbar extends Component {
 
 const mapStateToProps = (state, props) => {
   const
-    {items, pagination} = state.tasks,
+    {items, pagination, tab} = state.tasks,
     {page, rowsPerPage} = pagination,
     tasksOnPage = items.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
     selected = tasksOnPage.filter(item => item.checked)
   return {
     selected,
+    tab,
     login: state.auth.login
   }
 }
 
 export default connect(
   mapStateToProps,
-  {taskRemove, authLogout}
+  {taskRemove, tasksSetTab, authLogout}
 )(TaskToolbar)

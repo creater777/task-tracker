@@ -3,6 +3,8 @@ import {withStyles} from '@material-ui/core/styles'
 import {lighten} from '@material-ui/core/styles/colorManipulator'
 
 import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
@@ -29,6 +31,7 @@ const toolbarStyles = theme => ({
   },
   title: {
     flex: '0 0 auto',
+    margin:'1rem'
   },
 });
 
@@ -38,7 +41,9 @@ export default withStyles(toolbarStyles)((
     numSelected,
     handleRemove,
     login,
-    handleLogout
+    tabIndex,
+    handleLogout,
+    handleTabChange
   }) =>
   numSelected ?
     <AppBar position="static">
@@ -65,6 +70,10 @@ export default withStyles(toolbarStyles)((
             Todos
           </Typography>
         </div>
+        <Tabs value={tabIndex} onChange={handleTabChange}>
+          <Tab label="Table" />
+          <Tab label="Scram" />
+        </Tabs>
         <div className={classes.spacer}/>
         <div className={classes.title}>
           <Typography variant="h6" color="inherit">

@@ -16,7 +16,6 @@ class App extends Component {
   }
 
   loginFieldChange(login){
-    console.log('change', login)
     this.setState({
       login
     })
