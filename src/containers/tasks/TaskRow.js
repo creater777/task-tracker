@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
 import {statuses} from '../../config'
 
 import TaskRowComponent from '../../components/tasks/TaskRow'
-// import PropTypes from 'prop-types';
 
 import {taskEdit, taskRemove} from '../../actions/tasks'
 
@@ -49,3 +49,16 @@ export default connect(
   mapStateToProps,
   {taskEdit, taskRemove}
 )(TaskRow);
+
+TaskRow.propTypes = {
+  item: PropTypes.shape({
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number]
+    ),
+    title: PropTypes.string,
+    description: PropTypes.string,
+    status: PropTypes.string,
+    checked: PropTypes.bool
+  }).isRequired
+}

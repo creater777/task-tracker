@@ -10,6 +10,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
+import FilterListIcon from '@material-ui/icons/FilterList'
 import Button from '@material-ui/core/Button'
 
 const toolbarStyles = theme => ({
@@ -63,30 +64,35 @@ export default withStyles(toolbarStyles)((
         </div>
       </Toolbar>
     </AppBar>:
-    <AppBar position="static" className={classes.root}>
+    <AppBar position="static">
       <Toolbar>
         <div className={classes.title}>
           <Typography variant="h6" color="inherit">
             Todos
           </Typography>
         </div>
-        <Tabs value={tabIndex} onChange={handleTabChange}>
+        <Tabs value={tabIndex} variant="fullWidth" onChange={handleTabChange}>
           <Tab label="Table" />
           <Tab label="Scram" />
         </Tabs>
         <div className={classes.spacer}/>
+        <div className={classes.actions}>
+          <Tooltip title="Filter list">
+            <IconButton aria-label="Filter list">
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        </div>
         <div className={classes.title}>
           <Typography variant="h6" color="inherit">
             {login}
           </Typography>
         </div>
-        <div className={classes.actions}>
-          <Tooltip title="Logout">
-            <Button variant="contained" onClick={() => handleLogout()}>
-              Logout
-            </Button>
-          </Tooltip>
-        </div>
+        <Tooltip title="Logout">
+          <Button variant="contained" onClick={() => handleLogout()}>
+            Logout
+          </Button>
+        </Tooltip>
       </Toolbar>
     </AppBar>
 )

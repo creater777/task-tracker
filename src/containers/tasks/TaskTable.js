@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
 
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -80,3 +81,27 @@ export default connect(
   mapStateToProps,
   {taskSetPagination, taskSetDialog}
 )(TaskTable)
+
+TaskTable.propTypes = {
+  tasks: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number]
+    ),
+    title: PropTypes.string,
+    description: PropTypes.string,
+    status: PropTypes.string,
+    checked: PropTypes.bool
+  })).isRequired,
+
+  pagination: PropTypes.shape({
+    rowsPerPage: PropTypes.number,
+    page: PropTypes.number,
+    rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number)
+  }).isRequired,
+
+  orderBy: PropTypes.shape({
+    field: PropTypes.string,
+    sort: PropTypes.string
+  }).isRequired,
+}

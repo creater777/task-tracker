@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {statuses, colors} from '../../config'
-import { Container, Draggable } from 'react-smooth-dnd';
+import {statuses} from '../../config'
+import { Container, Draggable } from 'react-smooth-dnd'
 import { withStyles } from '@material-ui/core/styles'
-import {lime} from '@material-ui/core/colors'
+import PropTypes from 'prop-types'
+
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
@@ -27,7 +28,7 @@ const styles = theme => ({
     fontWeight: 'bold',
     textAlign: 'left'
   }
-});
+})
 
 const DragItem = ({classes, item, bgColor}) =>
   <Paper
@@ -59,45 +60,43 @@ class TaskScrum extends Component {
     taskEdit({...payload, status})
   }
 
-  render(){
+  render() {
     const
       {classes, group} = this.props,
       statusKeys = Object.keys(statuses)
     let index = 0
-    return <div className={classes.root}>
-      <Grid container>
-        {statusKeys.map((key, column) =>
-          <Grid key={key} item xs={12 / statusKeys.length}>
-            <Typography variant="subtitle1" gutterBottom className={classes.textHover} hover={classes.textHover}>
-              {statuses[key].title}
-            </Typography>
-            <Container
-              key={key}
-              groupName={key}
-              orientation="vertical"
-              removeOnDropOut={true}
-              shouldAcceptDrop={this.shouldAcceptDrop}
-              getChildPayload={index => this.getChildPayload(key, index)}
-              onDrop={e => this.onDrop(e, key)}
-              style={{
-                paddingTop: '3rem'
-              }}
-            >
-              {group[key] && group[key].map((item, i) => {
-                index++
-                return <Draggable key={`item-${index}`} index={item.id}>
-                  <DragItem
-                    bgColor={statuses[key].color}
-                    item={item}
-                    classes={classes}
-                  />
-                </Draggable>
-              })}
-            </Container>
-          </Grid>
-        )}
-      </Grid>
-    </div>
+    return <Grid container className={classes.root}>
+      {statusKeys.map(key =>
+        <Grid key={key} item xs={12 / statusKeys.length}>
+          <Typography variant="subtitle1" gutterBottom className={classes.textHover} hover={classes.textHover}>
+            {statuses[key].title}
+          </Typography>
+          <Container
+            key={key}
+            groupName={key}
+            orientation="vertical"
+            removeOnDropOut={true}
+            shouldAcceptDrop={this.shouldAcceptDrop}
+            getChildPayload={index => this.getChildPayload(key, index)}
+            onDrop={e => this.onDrop(e, key)}
+            style={{
+              paddingTop: '3rem'
+            }}
+          >
+            {group[key] && group[key].map((item, i) => {
+              index++
+              return <Draggable key={`item-${index}`} index={item.id}>
+                <DragItem
+                  bgColor={statuses[key].color}
+                  item={item}
+                  classes={classes}
+                />
+              </Draggable>
+            })}
+          </Container>
+        </Grid>
+      )}
+    </Grid>
   }
 }
 
@@ -117,3 +116,19 @@ export default withStyles(styles)(connect(
   mapStateToProps,
   {taskEdit}
 )(TaskScrum))
+
+TaskScrum.propTypes = {
+  group: PropTypes.objectOf(
+    PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number]
+      ),
+      title: PropTypes.string,
+      description: PropTypes.string,
+      status: PropTypes.string,
+      checked: PropTypes.bool
+    }))
+  ),
+  classes: PropTypes.object
+}

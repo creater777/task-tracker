@@ -1,6 +1,7 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import { connect } from 'react-redux'
-// import PropTypes from 'prop-types';
+
+import PropTypes from 'prop-types'
 import TaskHeaderComponent from '../../components/tasks/TaskHeader'
 
 import {taskSortBy, taskSelect} from '../../actions/tasks'
@@ -61,4 +62,31 @@ const mapStateToProps = (state) => {
 export default connect(
   mapStateToProps,
   {taskSortBy, taskSelect}
-)(TaskHeaderContainer);
+)(TaskHeaderContainer)
+
+TaskHeaderContainer.propTypes = {
+  tasksOnPage: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number]
+    ),
+    title: PropTypes.string,
+    description: PropTypes.string,
+    status: PropTypes.string,
+    checked: PropTypes.bool
+  })).isRequired,
+  selected: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number]
+    ),
+    title: PropTypes.string,
+    description: PropTypes.string,
+    status: PropTypes.string,
+    checked: PropTypes.bool
+  })),
+  orderBy: PropTypes.shape({
+    field: PropTypes.string,
+    sort: PropTypes.string
+  }).isRequired
+}

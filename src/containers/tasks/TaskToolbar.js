@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import TaskToolbarComponent from '../../components/tasks/TaskToolbar'
 
 import {taskRemove, tasksSetTab} from '../../actions/tasks'
@@ -52,3 +52,18 @@ export default connect(
   mapStateToProps,
   {taskRemove, tasksSetTab, authLogout}
 )(TaskToolbar)
+
+TaskToolbar.propTypes = {
+  selected: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number]
+    ),
+    title: PropTypes.string,
+    description: PropTypes.string,
+    status: PropTypes.string,
+    checked: PropTypes.bool
+  })),
+  tab: PropTypes.number.isRequired,
+  login: PropTypes.string.isRequired
+}

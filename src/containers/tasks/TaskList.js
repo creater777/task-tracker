@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import Beforeunload from 'react-beforeunload'
 import {withStyles} from "@material-ui/core/styles/index"
 
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import Fab from '@material-ui/core/Fab'
 import AddIcon from '@material-ui/icons/Add'
 
@@ -68,3 +68,32 @@ export default withStyles(styles)(connect(
   mapStateToProps,
   {tasksInit, tasksStore, taskSetDialog}
 )(TaskList))
+
+TaskList.propTypes = {
+  tasks: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number]
+    ),
+    title: PropTypes.string,
+    description: PropTypes.string,
+    status: PropTypes.string,
+    checked: PropTypes.bool
+  })).isRequired,
+
+  pagination: PropTypes.shape({
+    rowsPerPage: PropTypes.number,
+    page: PropTypes.number,
+    rowsPerPageOptions: PropTypes.arrayOf(PropTypes.number)
+  }).isRequired,
+
+  orderBy: PropTypes.shape({
+    field: PropTypes.string,
+    sort: PropTypes.string
+  }).isRequired,
+  tab: PropTypes.number.isRequired,
+  classes: PropTypes.object.isRequired,
+  tasksInit: PropTypes.func.isRequired,
+  tasksStore: PropTypes.func.isRequired,
+  taskSetDialog: PropTypes.func.isRequired
+}

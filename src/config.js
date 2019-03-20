@@ -15,6 +15,9 @@ const statuses = {
   }
 }
 
+const rowsPerPageOptions = [10, 25, 50]
+
 export {
-  statuses
+  statuses,
+  rowsPerPageOptions
 }

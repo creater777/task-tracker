@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 
 import AppComponent from '../components/App'
 import Auth from '../components/Auth'
@@ -47,3 +48,10 @@ export default connect(
   mapStateToProps,
   { authInit, authLogin }
 )(App)
+
+App.propTypes = {
+  auth: PropTypes.shape({
+    login: PropTypes.string,
+    token: PropTypes.string
+  })
+}

@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 
+import PropTypes from 'prop-types'
 import TaskDialogComponent from '../../components/tasks/TaskDialog'
 import {taskSetDialog, taskEdit, taskAdd} from '../../actions/tasks'
 
@@ -65,3 +66,19 @@ export default connect(
   mapStateToProps,
   {taskSetDialog, taskEdit, taskAdd}
 )(TaskDialog)
+
+TaskDialog.propTypes = {
+  dialog: PropTypes.shape({
+    visible: PropTypes.bool.isRequired,
+    data: PropTypes.shape({
+      id: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number]
+      ),
+      title: PropTypes.string,
+      description: PropTypes.string,
+      status: PropTypes.string,
+      checked: PropTypes.bool
+    })
+  })
+}

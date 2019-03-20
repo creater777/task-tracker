@@ -1,4 +1,5 @@
 import {compare} from '../helpers/compare'
+import {rowsPerPageOptions} from '../config'
 import {
   TASKS_INIT,
   TASKS_ADD,
@@ -19,9 +20,9 @@ const initialState = {
     sort: 'desc'
   },
   pagination: {
-    rowsPerPage: 10,
+    rowsPerPage: rowsPerPageOptions[0],
     page: 0,
-    rowsPerPageOptions: [5,10,25]
+    rowsPerPageOptions
   },
   tab: 0
 }
