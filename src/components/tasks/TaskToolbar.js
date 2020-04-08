@@ -71,10 +71,12 @@ export default withStyles(toolbarStyles)((
             Todos
           </Typography>
         </div>
-        <Tabs value={tabIndex} variant="fullWidth" onChange={handleTabChange}>
-          <Tab label="Table" />
-          <Tab label="Scram" />
-        </Tabs>
+        <div className={classes.tabs}>
+          <Tabs value={tabIndex} variant="fullWidth" onChange={handleTabChange}>
+            <Tab label="Table"/>
+            <Tab label="Scram"/>
+          </Tabs>
+        </div>
         <div className={classes.spacer}/>
         <div className={classes.actions}>
           <Tooltip title="Filter list">
